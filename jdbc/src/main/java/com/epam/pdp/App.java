@@ -30,6 +30,35 @@ public class App {
         return DriverManager.getConnection(URL, props);
     }
 
+    private static void createTables(Connection connecton) throws SQLException {
+        String createSuppliersTableQuery =
+                "create table SUPPLIERS\n" +
+                        "    (SUP_ID integer NOT NULL,\n" +
+                        "    SUP_NAME varchar(40) NOT NULL,\n" +
+                        "    STREET varchar(40) NOT NULL,\n" +
+                        "    CITY varchar(20) NOT NULL,\n" +
+                        "    STATE char(2) NOT NULL,\n" +
+                        "    ZIP char(5),\n" +
+                        "    PRIMARY KEY (SUP_ID));\n";
+
+        String createCoffeesTableQuery =
+                "create table COFFEES\n" +
+                        "    (COF_NAME varchar(32) NOT NULL,\n" +
+                        "    SUP_ID int NOT NULL,\n" +
+                        "    PRICE numeric(10,2) NOT NULL,\n" +
+                        "    SALES integer NOT NULL,\n" +
+                        "    TOTAL integer NOT NULL,\n" +
+                        "    PRIMARY KEY (COF_NAME),\n" +
+                        "    FOREIGN KEY (SUP_ID)\n" +
+                        "        REFERENCES SUPPLIERS (SUP_ID));";
+        try (Statement statement = connecton.createStatement()) {
+            statement.addBatch(createSuppliersTableQuery);
+            statement.addBatch(createCoffeesTableQuery);
+            statement.executeBatch();
+            printWarnings(statement.getWarnings());
+        }
+    }
+
     private static void printWarnings(SQLWarning warnings) {
         while (warnings != null) {
             System.out.println("SQL State: " + warnings.getSQLState());
