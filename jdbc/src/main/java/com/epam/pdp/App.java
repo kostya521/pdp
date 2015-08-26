@@ -9,6 +9,8 @@ public class App {
         Statement statement = null;
         try (Connection connection = getConnection();) {
             statement = connection.createStatement();
+//            createTables(connection);
+//            populateTables(connection);
 
         } catch (SQLException e) {
             printErrors(e);
@@ -56,6 +58,22 @@ public class App {
         try (Statement statement = connecton.createStatement()) {
             statement.addBatch(createSuppliersTableQuery);
             statement.addBatch(createCoffeesTableQuery);
+            statement.executeBatch();
+            printWarnings(statement.getWarnings());
+        }
+    }
+
+    public static void populateTables(Connection connection) throws SQLException {
+        try (Statement statement = connection.createStatement()) {
+            statement.addBatch("insert into SUPPLIERS values(49, 'Superior Coffee', '1 Party Place', 'Mendocino', 'CA', '95460');");
+            statement.addBatch("insert into SUPPLIERS values(101, 'Acme, Inc.', '99 Market Street', 'Groundsville', 'CA', '95199');");
+            statement.addBatch("insert into SUPPLIERS values(150, 'The High Ground', '100 Coffee Lane', 'Meadows', 'CA', '93966');");
+
+            statement.addBatch("insert into COFFEES values('Colombian', 00101, 7.99, 0, 0);");
+            statement.addBatch("insert into COFFEES values('French_Roast', 00049, 8.99, 0, 0);");
+            statement.addBatch("insert into COFFEES values('Espresso', 00150, 9.99, 0, 0);");
+            statement.addBatch("insert into COFFEES values('Colombian_Decaf', 00101, 8.99, 0, 0);");
+            statement.addBatch("insert into COFFEES values('French_Roast_Decaf', 00049, 9.99, 0, 0);");
             statement.executeBatch();
             printWarnings(statement.getWarnings());
         }
