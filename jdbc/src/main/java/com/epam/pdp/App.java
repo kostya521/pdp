@@ -11,6 +11,7 @@ public class App {
             statement = connection.createStatement();
 //            createTables(connection);
 //            populateTables(connection);
+//            viewTable(connection);
 
         } catch (SQLException e) {
             printErrors(e);
@@ -32,6 +33,24 @@ public class App {
             throw new SQLException(e);
         }
         return DriverManager.getConnection(properties.getProperty("url"), properties);
+    }
+
+    private static void viewTable(Connection connection) {
+        String query = "select COF_NAME, SUP_ID, PRICE, SALES, TOTAL from COFFEES";
+
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(query);
+            while (resultSet.next()) {
+                String coffeeName = resultSet.getString("COF_NAME");
+                int supplierID = resultSet.getInt("SUP_ID");
+                float price = resultSet.getFloat("PRICE");
+                int sales = resultSet.getInt("SALES");
+                int total = resultSet.getInt("TOTAL");
+                System.out.println(String.format("%s\t%s\t%s\t%s\t%s", coffeeName, supplierID, price, sales, total));
+            }
+        } catch (SQLException e) {
+            printErrors(e);
+        }
     }
 
     private static void createTables(Connection connecton) throws SQLException {
