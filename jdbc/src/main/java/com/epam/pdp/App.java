@@ -45,6 +45,17 @@ public class App {
         ps.close();
     }
 
+    private void addWithBatch(Connection con) throws SQLException {
+        Statement stmt = con.createStatement();
+
+        stmt.addBatch("INSERT INTO COFFEES VALUES('Amaretto', 49, 9.99, 0, 0)");
+        stmt.addBatch("INSERT INTO COFFEES VALUES('Hazelnut', 49, 9.99, 0, 0)");
+        stmt.addBatch("INSERT INTO COFFEES VALUES('Amaretto_decaf', -49, 10.99, 0, 0)");
+        stmt.addBatch("INSERT INTO COFFEES VALUES('Hazelnut_decaf', 49, 10.99, 0, 0)");
+
+        stmt.executeBatch();
+    }
+
     private static Connection getConnection() throws SQLException {
         Properties properties = new Properties();
         try {
