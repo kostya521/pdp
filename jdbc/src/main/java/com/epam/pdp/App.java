@@ -25,6 +25,26 @@ public class App {
         }
     }
 
+    private static void insertWithPreparedStatement(Connection con) throws SQLException {
+        insertIntoCoffees(con, "Amaretto", 49, 9.99f, 0, 0);
+        insertIntoCoffees(con, "Amaretto", 49, 9.99f, 0, 0);
+        insertIntoCoffees(con, "Hazelnut", 49, 9.99f, 0, 0);
+        insertIntoCoffees(con, "Amaretto_decaf", 49, 10.99f, 0, 0);
+        insertIntoCoffees(con, "Hazelnut_decaf", 49, 10.99f, 0, 0);
+    }
+
+    private static void insertIntoCoffees(Connection con, String f1, int f2, float f3, float f4, int f5) throws SQLException {
+        PreparedStatement ps = con.prepareStatement("INSERT INTO COFFEES VALUES (?,?,?,?,?)");
+        ps.setString(1, f1);
+        ps.setInt(2, f2);
+        ps.setFloat(3, f3);
+        ps.setFloat(4, f4);
+        ps.setInt(5, f5);
+
+        ps.executeUpdate();
+        ps.close();
+    }
+
     private static Connection getConnection() throws SQLException {
         Properties properties = new Properties();
         try {
