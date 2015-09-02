@@ -8,7 +8,7 @@ public class App {
     public static void main(String[] args) {
         Statement statement = null;
         try (Connection connection = getConnection();) {
-            statement = connection.createStatement();
+            statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 //            createTables(connection);
 //            populateTables(connection);
 //            viewTable(connection);
@@ -23,6 +23,22 @@ public class App {
             } catch (SQLException e) {
             }
         }
+    }
+
+    private static void insertRow(Connection con, String f1, int f2, float f3, int f4, int f5) throws SQLException {
+        Statement st = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+        ResultSet rs = st.executeQuery("SELECT * FROM COFFEES");
+
+        rs.moveToInsertRow();
+        rs.updateString("COF_NAME", f1);
+        rs.updateInt("SUP_ID", f2);
+        rs.updateFloat("PRICE", f3);
+        rs.updateInt("SALES", f4);
+        rs.updateInt("TOTAL", f5);
+
+        rs.insertRow();
+        rs.beforeFirst();
+        st.close();
     }
 
     private static void insertWithPreparedStatement(Connection con) throws SQLException {
