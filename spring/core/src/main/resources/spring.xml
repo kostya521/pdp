@@ -12,10 +12,17 @@
         <constructor-arg value="myFile.log"/>
     </bean>
 
+    <bean id="cacheFileEventLogger" class="com.epam.pdp.spring.logger.CacheFileEventLogger" init-method="init"
+          destroy-method="destroy">
+        <constructor-arg value="myFile.log"/>
+        <constructor-arg value="5"/>
+    </bean>
+
     <bean id="app" class="com.epam.pdp.spring.App">
         <constructor-arg ref="client"/>
         <!--<constructor-arg ref="eventLogger"/>-->
-        <constructor-arg ref="fileEventLogger"/>
+        <!--<constructor-arg ref="fileEventLogger"/>-->
+        <constructor-arg ref="cacheFileEventLogger"/>
     </bean>
 
     <bean id="event" class="com.epam.pdp.spring.Event" scope="prototype">

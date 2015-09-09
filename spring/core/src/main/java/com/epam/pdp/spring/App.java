@@ -2,6 +2,7 @@ package com.epam.pdp.spring;
 
 import com.epam.pdp.spring.logger.EventLogger;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class App {
@@ -20,11 +21,13 @@ public class App {
     }
 
     public static void main(String[] args) {
-        ApplicationContext ctx = new ClassPathXmlApplicationContext("spring.xml");
+        ConfigurableApplicationContext ctx = new ClassPathXmlApplicationContext("spring.xml");
         App app = ctx.getBean("app", App.class);
 
         Event event = ctx.getBean("event", Event.class);
         event.setMessage("some event for 1");
         app.logEvent(event);
+
+        ctx.close();
     }
 }
