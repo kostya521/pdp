@@ -6,11 +6,16 @@
         <constructor-arg value="John Smith"/>
     </bean>
 
-    <bean id="eventLogger" class="com.epam.pdp.spring.ConsoleEventLogger"/>
+    <bean id="eventLogger" class="com.epam.pdp.spring.logger.ConsoleEventLogger"/>
+
+    <bean id="fileEventLogger" class="com.epam.pdp.spring.logger.FileEventLogger" init-method="init">
+        <constructor-arg value="myFile.log"/>
+    </bean>
 
     <bean id="app" class="com.epam.pdp.spring.App">
         <constructor-arg ref="client"/>
-        <constructor-arg ref="eventLogger"/>
+        <!--<constructor-arg ref="eventLogger"/>-->
+        <constructor-arg ref="fileEventLogger"/>
     </bean>
 
     <bean id="event" class="com.epam.pdp.spring.Event" scope="prototype">
