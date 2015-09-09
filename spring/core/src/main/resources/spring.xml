@@ -1,0 +1,25 @@
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation=" http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+    <bean id="client" class="com.epam.pdp.spring.Client">
+        <constructor-arg value="1"/>
+        <constructor-arg value="John Smith"/>
+    </bean>
+
+    <bean id="eventLogger" class="com.epam.pdp.spring.ConsoleEventLogger"/>
+
+    <bean id="app" class="com.epam.pdp.spring.App">
+        <constructor-arg ref="client"/>
+        <constructor-arg ref="eventLogger"/>
+    </bean>
+
+    <bean id="event" class="com.epam.pdp.spring.Event" scope="prototype">
+        <constructor-arg index="0">
+            <bean class="java.util.Date"/>
+        </constructor-arg>
+        <constructor-arg>
+            <bean class="java.text.DateFormat" factory-method="getDateInstance"/>
+        </constructor-arg>
+    </bean>
+
+</beans>
