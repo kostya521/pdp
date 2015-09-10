@@ -1,22 +1,29 @@
 package com.epam.pdp.spring;
 
+import com.epam.pdp.spring.events.EventType;
 import com.epam.pdp.spring.logger.EventLogger;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class App {
-    private Client client;
-    private EventLogger eventLogger;
+import java.util.Map;
 
-    public App(Client client, EventLogger eventLogger) {
+public class App {
+    private Map<EventType, EventLogger> loggers;
+    private Client client;
+    private EventLogger defaultLogger;
+
+    public App(Client client, EventLogger defaultLogger, Map<EventType, EventLogger> loggers) {
         this.client = client;
-        this.eventLogger = eventLogger;
+        this.defaultLogger = defaultLogger;
+        this.loggers = loggers;
     }
 
-    private void logEvent(Event event) {
-        String msg = event.getMessage().replaceAll(client.getId(), client.getFullName());
-        event.setMessage(msg);
-        eventLogger.logEvent(event);
+    private void logEvent(EventType type, Event event) {
+        EventLogger logger = loggers.get(type);
+        if (logger == null) {
+            logger = defaultLogger;
+        }
+        logger.logEvent(event);
     }
 
     public static void main(String[] args) {
@@ -25,7 +32,9 @@ public class App {
 
         Event event = ctx.getBean("event", Event.class);
         event.setMessage("some event for 1");
-        app.logEvent(event);
+
+        app.logEvent(EventType.INFO, event);
+        app.logEvent(EventType.ERROR, event);
 
         ctx.close();
     }

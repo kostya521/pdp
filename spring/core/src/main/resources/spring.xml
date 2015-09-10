@@ -6,13 +6,18 @@
     <bean id="client" class="com.epam.pdp.spring.Client">
         <constructor-arg value="1"/>
         <constructor-arg value="John Smith"/>
+        <property name="greeting" value="Hi there!"/>
     </bean>
 
     <bean id="app" class="com.epam.pdp.spring.App">
         <constructor-arg ref="client"/>
-        <!--<constructor-arg ref="eventLogger"/>-->
-        <!--<constructor-arg ref="fileEventLogger"/>-->
-        <constructor-arg ref="cacheFileEventLogger"/>
+        <constructor-arg ref="consoleEventLogger"/>
+        <constructor-arg>
+            <map>
+                <entry key="INFO" value-ref="consoleEventLogger"/>
+                <entry key="ERROR" value-ref="combinedEventLogger"/>
+            </map>
+        </constructor-arg>
     </bean>
 
     <bean id="event" class="com.epam.pdp.spring.Event" scope="prototype">
