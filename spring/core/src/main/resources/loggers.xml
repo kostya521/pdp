@@ -1,0 +1,16 @@
+<beans default-lazy-init="true" xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation=" http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+    <bean id="eventLogger" class="com.epam.pdp.spring.logger.ConsoleEventLogger"/>
+
+    <bean id="fileEventLogger" class="com.epam.pdp.spring.logger.FileEventLogger" init-method="init">
+        <constructor-arg value="myFile.log"/>
+    </bean>
+
+    <bean id="cacheFileEventLogger" class="com.epam.pdp.spring.logger.CacheFileEventLogger" init-method="init"
+          destroy-method="destroy">
+        <constructor-arg value="myFile.log"/>
+        <constructor-arg value="5"/>
+    </bean>
+
+</beans>
