@@ -9,6 +9,12 @@ public class Client {
         this.fullName = fullName;
     }
 
+    public Client(String id, String fullName, String greeting) {
+        this.id = id;
+        this.fullName = fullName;
+        this.greeting = greeting;
+    }
+
     public void setGreeting(String greeting) {
         this.greeting = greeting;
     }
@@ -35,4 +41,12 @@ public class Client {
 
     private String fullName;
 
+    @Override
+    public String toString() {
+        return "Client{" +
+                "id='" + id + '\'' +
+                ", greeting='" + greeting + '\'' +
+                ", fullName='" + fullName + '\'' +
+                '}';
+    }
 }

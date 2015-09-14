@@ -2,17 +2,19 @@ package com.epam.pdp.spring;
 
 import com.epam.pdp.spring.events.EventType;
 import com.epam.pdp.spring.logger.EventLogger;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.util.Map;
 
 public class App {
-    private Map<EventType, EventLogger> loggers;
+    private Map<String, EventLogger> loggers;
     private Client client;
     private EventLogger defaultLogger;
 
-    public App(Client client, EventLogger defaultLogger, Map<EventType, EventLogger> loggers) {
+    public App() {
+    }
+
+    public App(Client client, EventLogger defaultLogger, Map<String, EventLogger> loggers) {
         this.client = client;
         this.defaultLogger = defaultLogger;
         this.loggers = loggers;
@@ -27,7 +29,7 @@ public class App {
     }
 
     public static void main(String[] args) {
-        ConfigurableApplicationContext ctx = new ClassPathXmlApplicationContext("spring.xml");
+        AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(AppConfig.class);
         App app = ctx.getBean("app", App.class);
 
         Event event = ctx.getBean("event", Event.class);
